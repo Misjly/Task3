@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace AutomaticTelephoneExchange
 {
-    public class ATE : IATE
+    public class Station : IStation
     {
         private IDictionary<PhoneNumber, Tuple<Port, IContract>> _usersData;
         private IList<CallInfo> _callList { get; }
 
-        public ATE()
+        public Station()
         {
             _usersData = new Dictionary<PhoneNumber, Tuple<Port, IContract>>();
             _callList = new List<CallInfo>();
@@ -58,7 +58,6 @@ namespace AutomaticTelephoneExchange
             PhoneNumber targetNumber;
             if (e is EndCallEventArgs)
             {
-
                 var callListFirst = _callList.First(x => x.Id.Equals(e.Id));
                 if (callListFirst.MyNumber == e.TelephoneNumber)
                 {

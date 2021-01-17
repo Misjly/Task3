@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AutomaticTelephoneExchange
 {
-    public interface IATE
+    public interface IStation
     {
         Terminal GetNewTerminal(IContract contract);
         IContract RegisterContract(Subscriber subscriber, string phoneNumber, Tariff tariff);

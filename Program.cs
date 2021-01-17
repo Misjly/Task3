@@ -2,6 +2,7 @@
 using AutomaticTelephoneExchange.Enums;
 using Billing;
 using System;
+using Task3.Billing.Enums;
 
 namespace Task3
 {
@@ -14,7 +15,7 @@ namespace Task3
             int costPerMinute = 2;
 
 
-            IATE automaticTelephoneExchange = new ATE();
+            IStation automaticTelephoneExchange = new AutomaticTelephoneExchange.Station();
 
             Tariff tariff = new Tariff(costOfMonth, costPerMinute);
 
@@ -56,9 +57,14 @@ namespace Task3
             Console.WriteLine();
             Console.WriteLine();
 
-            reporter.ShowRecords(billingSystem.GetReport(terminal1.Number));
-            reporter.ShowRecords(billingSystem.GetReport(terminal2.Number));
-            reporter.ShowRecords(billingSystem.GetReport(terminal3.Number));
+            var report = billingSystem.GetReport(terminal1.Number);
+            reporter.ShowRecords(reporter.SortCalls(report, SortType.SortByCost));
+
+            report = billingSystem.GetReport(terminal2.Number);
+            reporter.ShowRecords(reporter.SortCalls(report, SortType.SortByDate));
+
+            report = billingSystem.GetReport(terminal3.Number);
+            reporter.ShowRecords(reporter.SortCalls(report, SortType.SortByNumber));
 
         }
     }

@@ -8,15 +8,8 @@ namespace AutomaticTelephoneExchange
     public class Terminal
     {
         public PhoneNumber Number { get; }
-        private Port _terminalPort { get; set; }
-        public Port TerminalPort
-        {
-            get
-            {
-                return _terminalPort;
-            }
-        }
-        private Guid _id { get; set; }
+        public Port TerminalPort { get; }
+        private Guid Id { get; set; }
 
         public event EventHandler<CallEventArgs> CallEvent;
         public event EventHandler<AnswerEventArgs> AnswerEvent;
@@ -24,7 +17,7 @@ namespace AutomaticTelephoneExchange
         public Terminal(PhoneNumber number, Port port)
         {
             Number = number;
-            _terminalPort = port;
+            TerminalPort = port;
         }
         protected virtual void RaiseCallEvent(PhoneNumber targetNumber, Guid id)
         {
@@ -43,13 +36,13 @@ namespace AutomaticTelephoneExchange
 
         public void Call(PhoneNumber targetNumber)
         {
-            RaiseCallEvent(targetNumber, _id);
+            RaiseCallEvent(targetNumber, Id);
         }
 
         public void TakeIncomingCall(object sender, CallEventArgs e)
         {
             bool answerFlag = false;
-            _id = e.Id;
+            Id = e.Id;
             Console.WriteLine($"Have incoming Call at number: {e.TelephoneNumber} to terminal {e.TargetTelephoneNumber}");
             do
             {
@@ -76,26 +69,26 @@ namespace AutomaticTelephoneExchange
 
         public void ConnectToPort()
         {
-            if (_terminalPort.Connect(this))
+            if (TerminalPort.Connect(this))
             {
-                _terminalPort.CallPortEvent += TakeIncomingCall;
-                _terminalPort.AnswerPortEvent += TakeAnswer;
+                TerminalPort.CallPortEvent += TakeIncomingCall;
+                TerminalPort.AnswerPortEvent += TakeAnswer;
             }
         }
 
         public void AnswerToCall(PhoneNumber target, CallState state)
         {
-            RaiseAnswerEvent(target, state, _id);
+            RaiseAnswerEvent(target, state, Id);
         }
 
         public void EndCall(PhoneNumber targetNumber)
         {
-            RaiseEndCallEvent(targetNumber, _id);
+            RaiseEndCallEvent(targetNumber, Id);
         }
 
         public void TakeAnswer(object sender, AnswerEventArgs e)
         {
-            _id = e.Id;
+            Id = e.Id;
             if (e.StateInCall == CallState.Answered)
             {
                 Console.WriteLine($"Terminal with number {e.TargetTelephoneNumber} have answered on call from number {e.TelephoneNumber}");
