@@ -13,9 +13,4 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ATE\AutomaticTelephoneExchange.csproj" />
-    <ProjectReference Include="..\Billing\Billing.csproj" />
-  </ItemGroup>
-
 </Project>
